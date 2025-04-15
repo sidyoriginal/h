@@ -118,5 +118,3 @@ local killerSpeedSlider = createModernSlider(slidersContainer, 0.75, "KILLER SPE
 
 -- Update content height for minimize function
 local contentHeight = 400 -- Match background height
-
--- ... (keep the rest of the code the same)
