@@ -1,0 +1,122 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+
+-- Settings
+local settings = {
+    teleportEnabled = true,
+    teleportDistance = 5,
+    maxSearchDistance = 16,
+    survivorSpeed = 16,
+    killerSpeed = 8,
+    aimAssistEnabled = false
+}
+
+-- Create horizontal GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TeleportGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local background = Instance.new("Frame")
+background.Name = "Background"
+background.Size = UDim2.new(0, 600, 0, 400) -- Increased height for better spacing
+background.Position = UDim2.new(0.5, -300, 0, 20)
+background.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+background.BorderSizePixel = 0
+background.Active = true
+background.Draggable = false
+background.Parent = screenGui
+
+-- ... (keep the same corner and shadow code)
+
+-- Title bar with buttons (draggable part)
+local titleBar = Instance.new("Frame")
+titleBar.Name = "TitleBar"
+titleBar.Size = UDim2.new(1, 0, 0, 40)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+titleBar.BorderSizePixel = 0
+titleBar.Active = true
+titleBar.Draggable = false
+titleBar.Parent = background
+
+-- ... (keep the same title bar elements)
+
+-- Main container for horizontal layout
+local mainContainer = Instance.new("Frame")
+mainContainer.Name = "MainContainer"
+mainContainer.Size = UDim2.new(1, 0, 1, -50)
+mainContainer.Position = UDim2.new(0, 0, 0, 50)
+mainContainer.BackgroundTransparency = 1
+mainContainer.Parent = background
+
+-- Container for buttons (left side)
+local buttonsContainer = Instance.new("Frame")
+buttonsContainer.Name = "ButtonsContainer"
+buttonsContainer.Size = UDim2.new(0.35, 0, 1, 0)
+buttonsContainer.Position = UDim2.new(0, 0, 0, 0)
+buttonsContainer.BackgroundTransparency = 1
+buttonsContainer.Parent = mainContainer
+
+-- Container for sliders (right side)
+local slidersContainer = Instance.new("Frame")
+slidersContainer.Name = "SlidersContainer"
+slidersContainer.Size = UDim2.new(0.65, 0, 1, 0)
+slidersContainer.Position = UDim2.new(0.35, 0, 0, 0)
+slidersContainer.BackgroundTransparency = 1
+slidersContainer.Parent = mainContainer
+
+-- ... (keep the same vertical divider code)
+
+-- Modified button creation function with increased spacing
+local function createModernButton(parent, yPos, text, enabled, color)
+    local button = Instance.new("TextButton")
+    button.Name = text.."Button"
+    button.Size = UDim2.new(0.9, 0, 0, 60) -- Increased button height
+    button.Position = UDim2.new(0.05, 0, yPos, 0)
+    button.Text = text..": "..(enabled and "ON" or "OFF")
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundColor3 = enabled and color or Color3.fromRGB(60, 60, 70)
+    button.Font = Enum.Font.GothamBold
+    button.TextSize = 18 -- Increased text size
+    button.BorderSizePixel = 0
+    button.AutoButtonColor = false
+    button.Parent = parent
+    
+    -- ... (keep the same corner and hover effects)
+    
+    return button
+end
+
+-- Create buttons with larger vertical spacing
+local teleportButton = createModernButton(buttonsContainer, 0, "TELEPORT", settings.teleportEnabled, Color3.fromRGB(0, 120, 215))
+local aimAssistButton = createModernButton(buttonsContainer, 0.25, "AIM ASSIST", settings.aimAssistEnabled, Color3.fromRGB(215, 0, 120)) -- Increased Y position
+
+-- Modified slider creation function with increased spacing
+local function createModernSlider(parent, yPos, labelText, minValue, maxValue, currentValue, color)
+    local sliderContainer = Instance.new("Frame")
+    sliderContainer.Name = labelText.."Container"
+    sliderContainer.Size = UDim2.new(0.9, 0, 0, 100) -- Increased height for better spacing
+    sliderContainer.Position = UDim2.new(0.05, 0, yPos, 0)
+    sliderContainer.BackgroundTransparency = 1
+    sliderContainer.Parent = parent
+    
+    -- ... (keep the same slider implementation)
+    
+    return sliderContainer, label, bar, fill, button
+end
+
+-- Create sliders with larger vertical spacing
+local teleportDistanceSlider = createModernSlider(slidersContainer, 0, "TELEPORT DISTANCE", 1, 50, settings.teleportDistance, Color3.fromRGB(0, 120, 215))
+local searchDistanceSlider = createModernSlider(slidersContainer, 0.25, "SEARCH DISTANCE", 5, 100, settings.maxSearchDistance, Color3.fromRGB(0, 170, 170))
+local survivorSpeedSlider = createModernSlider(slidersContainer, 0.5, "SURVIVOR SPEED", 10, 50, settings.survivorSpeed, Color3.fromRGB(100, 200, 100))
+local killerSpeedSlider = createModernSlider(slidersContainer, 0.75, "KILLER SPEED", 5, 50, settings.killerSpeed, Color3.fromRGB(200, 100, 100))
+
+-- Update content height for minimize function
+local contentHeight = 400 -- Match background height
+
+-- ... (keep the rest of the code the same)
